@@ -22,15 +22,23 @@ def str_base(value: 'int', base: 'int') -> 'str':
     """Shows value using number base, e.g. str_base(44027, 36)=='XYZ'"""
     if base <= 10:
         return str(value)
-    elif base <= 36:
+    if base <= 36:
         res = ""
         while value > 0:
-            res += chr(value % base + 55)
+            digit = value % base
+            if digit < 10:
+                res += str(digit)
+            else:
+                res += chr(value % base + ord('A') - 10)
             value //= base
         return res[::-1]
+    else:
+        return "Error"
 
 
 def is_simple(value: 'int') -> 'bool':
+    if value == 2:
+        return True
     if value % 2 == 0 or value == 1:
         return False
     for i in range(3, round(math.sqrt(value)), 2):
