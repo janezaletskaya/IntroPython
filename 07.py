@@ -20,16 +20,16 @@ def egcd(a: 'int', b: 'int') -> 'tuple':
 
 def str_base(value: 'int', base: 'int') -> 'str':
     """Shows value using number base, e.g. str_base(44027, 36)=='XYZ'"""
-    if base <= 10:
-        return str(value)
     if base <= 36:
+        if value == 0:
+            return "0"
         res = ""
         while value > 0:
             digit = value % base
             if digit < 10:
                 res += str(digit)
             else:
-                res += chr(value % base + ord('A') - 10)
+                res += chr(digit + ord('A') - 10)
             value //= base
         return res[::-1]
     else:
@@ -41,10 +41,15 @@ def is_simple(value: 'int') -> 'bool':
         return True
     if value % 2 == 0 or value == 1:
         return False
-    for i in range(3, round(math.sqrt(value)), 2):
+    for i in range(3, round(math.sqrt(value) + 1), 2):
         if value % i == 0:
             return False
     return True
 
 
 is_simple_cached = functools.lru_cache()(is_simple)
+
+
+for i in range(50):
+    for j in range(2, 36):
+        print("i: {} in {} = {}".format(i, j, str_base(i, j)))
